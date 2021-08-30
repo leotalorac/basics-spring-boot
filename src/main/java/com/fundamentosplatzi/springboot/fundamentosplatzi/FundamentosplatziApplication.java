@@ -1,6 +1,7 @@
 package com.fundamentosplatzi.springboot.fundamentosplatzi;
 
 import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBean;
+import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBeanWithDependency;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.component.ComponentDependency;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -12,10 +13,12 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 
 	private ComponentDependency componentDependency;
 	private MyBean myBean;
+	private MyBeanWithDependency myBeanWithDependency;
 //	inject a dependency from one of the n implementation
-	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean){
+	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency){
 		this.componentDependency=componentDependency;
 		this.myBean = myBean;
+		this.myBeanWithDependency = myBeanWithDependency;
 	}
 
 	public static void main(String[] args) {
@@ -27,5 +30,6 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		this.componentDependency.saludar();
 		this.myBean.print();
+		this.myBeanWithDependency.printWithDependency();
 	}
 }

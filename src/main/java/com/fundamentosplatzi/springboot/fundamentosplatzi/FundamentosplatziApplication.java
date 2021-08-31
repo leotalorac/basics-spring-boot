@@ -4,6 +4,7 @@ import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBean;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBeanWithDependency;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBeanWithProperties;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.component.ComponentDependency;
+import com.fundamentosplatzi.springboot.fundamentosplatzi.pojo.UserPojo;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,12 +17,16 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 	private MyBean myBean;
 	private MyBeanWithDependency myBeanWithDependency;
 	private MyBeanWithProperties myBeanWithProperties;
+
+	private UserPojo userPojo;
+
 //	inject a dependency from one of the n implementation
-	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency,MyBeanWithProperties myBeanWithProperties){
+	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency,MyBeanWithProperties myBeanWithProperties, UserPojo userPojo){
 		this.componentDependency=componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependency = myBeanWithDependency;
 		this.myBeanWithProperties = myBeanWithProperties;
+		this.userPojo = userPojo;
 	}
 
 	public static void main(String[] args) {
@@ -35,5 +40,6 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 		this.myBean.print();
 		this.myBeanWithDependency.printWithDependency();
 		System.out.println(this.myBeanWithProperties.function());
+		System.out.println(userPojo.getEmail() +" "+ userPojo.getPassword() + " "+ userPojo.getAge());
 	}
 }

@@ -5,6 +5,8 @@ import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBeanWithDepende
 import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBeanWithProperties;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.component.ComponentDependency;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.pojo.UserPojo;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +21,8 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 	private MyBeanWithProperties myBeanWithProperties;
 
 	private UserPojo userPojo;
+
+	Log LOGGER = LogFactory.getLog(FundamentosplatziApplication.class);
 
 //	inject a dependency from one of the n implementation
 	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency,MyBeanWithProperties myBeanWithProperties, UserPojo userPojo){
@@ -41,5 +45,14 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 		this.myBeanWithDependency.printWithDependency();
 		System.out.println(this.myBeanWithProperties.function());
 		System.out.println(userPojo.getEmail() +" "+ userPojo.getPassword() + " "+ userPojo.getAge());
+		try{
+			//Error
+			int value = 10/0;
+			LOGGER.debug("It works!!" + value);
+		}catch (Exception e){
+			LOGGER.error("this is an application Error of zero division " + e.getMessage());
+		}
+
+
 	}
 }

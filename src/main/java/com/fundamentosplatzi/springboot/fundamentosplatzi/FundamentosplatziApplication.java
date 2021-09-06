@@ -4,13 +4,20 @@ import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBean;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBeanWithDependency;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.bean.MyBeanWithProperties;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.component.ComponentDependency;
+import com.fundamentosplatzi.springboot.fundamentosplatzi.entity.User;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.pojo.UserPojo;
+import com.fundamentosplatzi.springboot.fundamentosplatzi.repository.UserRepository;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class FundamentosplatziApplication implements CommandLineRunner {
@@ -22,15 +29,18 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 
 	private UserPojo userPojo;
 
+	private UserRepository userRepository;
+
 	Log LOGGER = LogFactory.getLog(FundamentosplatziApplication.class);
 
 //	inject a dependency from one of the n implementation
-	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency,MyBeanWithProperties myBeanWithProperties, UserPojo userPojo){
+	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency,MyBeanWithProperties myBeanWithProperties, UserPojo userPojo,UserRepository userRepository){
 		this.componentDependency=componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependency = myBeanWithDependency;
 		this.myBeanWithProperties = myBeanWithProperties;
 		this.userPojo = userPojo;
+		this.userRepository = userRepository;
 	}
 
 	public static void main(String[] args) {
@@ -41,6 +51,15 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		this.examples();
+		this.saveUsersInDataBase();
+	}
+
+	private void saveUsersInDataBase(){
+		User user1 = new User("Luis","luis@gmail.com", LocalDate.of(2021, 3,20));
+		User user2 = new User("Juanito","juanitos@gmail.com", LocalDate.of(2020,12,20));
+		User user3 = new User("Daniela","daniela@gmail.com", LocalDate.of(2020,12,10));
+		List<User> users = Arrays.asList(user1,user2,user3);
+		userRepository.saveAll(users);
 	}
 
 	public void examples(){

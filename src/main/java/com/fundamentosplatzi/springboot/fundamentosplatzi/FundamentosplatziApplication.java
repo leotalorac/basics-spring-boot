@@ -40,6 +40,10 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 //	implements the command line application
 	@Override
 	public void run(String... args) throws Exception {
+		this.examples();
+	}
+
+	public void examples(){
 		this.componentDependency.saludar();
 		this.myBean.print();
 		this.myBeanWithDependency.printWithDependency();
@@ -52,7 +56,5 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 		}catch (Exception e){
 			LOGGER.error("this is an application Error of zero division " + e.getMessage());
 		}
-
-
 	}
 }

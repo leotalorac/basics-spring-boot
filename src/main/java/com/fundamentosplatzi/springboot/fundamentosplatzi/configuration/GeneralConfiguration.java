@@ -27,7 +27,7 @@ public class GeneralConfiguration {
     }
 
     @Bean
-    //Manual control
+    //Manual configuration data source
     public DataSource dataSource(){
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");

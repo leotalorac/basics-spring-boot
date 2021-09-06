@@ -8,10 +8,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
 
 @Configuration
+@PropertySource("classpath:connection.properties")
 @EnableConfigurationProperties(UserPojo.class)
 public class GeneralConfiguration {
     @Value("${value.name}")
@@ -20,6 +22,19 @@ public class GeneralConfiguration {
     private String lastname;
     @Value("${value.random}")
     private String random;
+
+    @Value("${jbdc.url}")
+    private String url;
+
+    @Value("${driver}")
+    private String driver;
+
+    @Value("${username}")
+    private String user;
+
+    @Value("${password}")
+    private String pass;
+
 
     @Bean
     public MyBeanWithProperties function(){
@@ -30,10 +45,10 @@ public class GeneralConfiguration {
     //Manual configuration data source
     public DataSource dataSource(){
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.h2.Driver");
-        dataSourceBuilder.url("jdbc:h2:mem:testdb");
-        dataSourceBuilder.username("sa");
-        dataSourceBuilder.password("");
+        dataSourceBuilder.driverClassName(driver);
+        dataSourceBuilder.url(url);
+        dataSourceBuilder.username(user);
+        dataSourceBuilder.password(pass);
         return dataSourceBuilder.build();
     }
 }

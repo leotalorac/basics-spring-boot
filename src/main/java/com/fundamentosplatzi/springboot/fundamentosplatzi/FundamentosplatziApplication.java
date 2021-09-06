@@ -65,6 +65,13 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 		userRepository.findAndSort("L",
 						Sort.by("id").descending())
 				.forEach(user -> LOGGER.info("User with sort method " + user));
+
+		userRepository.findByName("Luis")
+				.forEach(user -> LOGGER.info("Find by name " + user));
+
+		LOGGER.info("User Query findByEmailAndName " + userRepository.findByEmailAndName("luis@gmail.com","Luis")
+				.orElseThrow(()->new RuntimeException("No user found")));
+
 	}
 	private void saveUsersInDataBase(){
 		User user1 = new User("Luis","luis@gmail.com", LocalDate.of(2021, 3,20));

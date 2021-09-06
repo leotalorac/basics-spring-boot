@@ -7,6 +7,7 @@ import com.fundamentosplatzi.springboot.fundamentosplatzi.component.ComponentDep
 import com.fundamentosplatzi.springboot.fundamentosplatzi.entity.User;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.pojo.UserPojo;
 import com.fundamentosplatzi.springboot.fundamentosplatzi.repository.UserRepository;
+import com.fundamentosplatzi.springboot.fundamentosplatzi.service.UserService;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,17 +32,21 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 	private UserPojo userPojo;
 
 	private UserRepository userRepository;
+	private UserService userService;
 
 	Log LOGGER = LogFactory.getLog(FundamentosplatziApplication.class);
 
 //	inject a dependency from one of the n implementation
-	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency,MyBeanWithProperties myBeanWithProperties, UserPojo userPojo,UserRepository userRepository){
+	public FundamentosplatziApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency,MyBean myBean,MyBeanWithDependency myBeanWithDependency,MyBeanWithProperties myBeanWithProperties, UserPojo userPojo,
+										UserRepository userRepository,
+										UserService userService){
 		this.componentDependency=componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependency = myBeanWithDependency;
 		this.myBeanWithProperties = myBeanWithProperties;
 		this.userPojo = userPojo;
 		this.userRepository = userRepository;
+		this.userService=userService;
 	}
 
 	public static void main(String[] args) {
@@ -54,8 +59,28 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 		this.examples();
 		this.saveUsersInDataBase();
 		this.getInformationJpqlFromUser();
+		this.saveWithErrorTransactional();
 	}
 
+	private void saveWithErrorTransactional(){
+		User test1 = new User("TestTransactional1", "TestTransactional1@domain.com", LocalDate.now());
+		User test2 = new User("TestTransactional2", "TestTransactional2@domain.com", LocalDate.now());
+		User test3 = new User("TestTransactional3", "TestTransactional3@domain.com", LocalDate.now());
+		User test4 = new User("TestTransactional4", "TestTransactional4@domain.com", LocalDate.now());
+		User test5 = new User("TestTransactional1", "TestTransactional1@domain.com", LocalDate.now());
+
+		List<User> users = Arrays.asList(test1,test2,test3,test4,test5);
+		try{
+			userService.saveTransactional(users);
+		}catch (Exception e){
+			LOGGER.error("No register");
+		}
+
+
+		userService.getAllUsers().forEach(user->{
+			LOGGER.info("Users transaction: " + user);
+		});
+	}
 
 	private void getInformationJpqlFromUser(){
 		LOGGER.info("User with mail luis@gmail.com findByUserEmail" +

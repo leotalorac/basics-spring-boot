@@ -72,6 +72,20 @@ public class FundamentosplatziApplication implements CommandLineRunner {
 		LOGGER.info("User Query findByEmailAndName " + userRepository.findByEmailAndName("luis@gmail.com","Luis")
 				.orElseThrow(()->new RuntimeException("No user found")));
 
+		userRepository.findByNameLike("%Luis%")
+				.forEach(user -> LOGGER.info("Find by findByNameLike " + user));
+
+		userRepository.findByNameOrEmail("","luis@gmail.com")
+				.forEach(user -> LOGGER.info("Find by findByNameOrEmail " + user));
+
+		userRepository.findByNameOrEmail("Luis",null)
+				.forEach(user -> LOGGER.info("Find by findByNameOrEmail " + user));
+
+		userRepository.findByBirthDateBetween(LocalDate.of(2020,12,15),LocalDate.now())
+				.forEach(user -> LOGGER.info("Find by findByBirthDateBetween " + user));
+
+		userRepository.findByNameLikeOrderByIdDesc("%Luis%")
+				.forEach(user -> LOGGER.info("Find by findByNameLikeOrderByIdDesc " + user));
 	}
 	private void saveUsersInDataBase(){
 		User user1 = new User("Luis","luis@gmail.com", LocalDate.of(2021, 3,20));

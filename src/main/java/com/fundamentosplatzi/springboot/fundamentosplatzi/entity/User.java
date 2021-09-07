@@ -34,9 +34,6 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public User(String luis) {
-    }
-
     @Override
     public String toString() {
         return "User{" +

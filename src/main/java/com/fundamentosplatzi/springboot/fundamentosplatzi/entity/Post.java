@@ -1,5 +1,7 @@
 package com.fundamentosplatzi.springboot.fundamentosplatzi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +13,8 @@ public class Post {
     private Long id;
     @Column(name="description",length = 255)
     private String description;
+
+    @JsonBackReference
     @ManyToOne
     private User user;
 
